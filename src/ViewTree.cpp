@@ -71,11 +71,8 @@ void ViewTree::handleRealtimeInput(ViewNode& node)
     node.handleRealtimeInput();
 }
 
-#include <iostream>
-
 void ViewTree::draw(sf::RenderTarget& target, sf::RenderStates states, const ViewNode& node) const
 {
-    std::cout << "ViewTree::draw(sf::RenderTarget& target, sf::RenderStates states, const ViewNode& node)" << std::endl;
     states.transform *= node.getTransform();
     
     for (auto& child : node.m_children)

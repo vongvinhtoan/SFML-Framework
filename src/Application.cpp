@@ -2,13 +2,17 @@
 #include <iostream>
 
 Application::Application()
+: m_backend(&Backend::getInstance())
+, m_fontHolder(std::make_unique<FontHolder>())
 {
     loadData();
     m_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(640, 480), "SFML Application");
-    m_activityStack = std::make_unique<ActivityStack>();
-    m_viewTree = std::make_unique<ViewTree>(std::unique_ptr<StatisticsView>(new StatisticsView));
+    m_activityStack = std::make_unique<ActivityStack>(); 
+    m_viewTree = std::make_unique<ViewTree>(std::make_unique<StatisticsView>(m_fontHolder->get(FontID::Main)));
     m_statisticsView = dynamic_cast<StatisticsView*>(m_viewTree->getRoot());
-    std::cout << m_statisticsView << std::endl;
+    m_statisticsView->attachChild(std::make_unique<MovingSquare>(sf::FloatRect(0.f, 0.f, 640.f, 480.f)));
+
+    m_window->setFramerateLimit(60);
 }
 
 Application& Application::getInstance()
@@ -45,7 +49,12 @@ void Application::run()
 
 void Application::loadData()
 {
+    loadFonts();
+}
 
+void Application::loadFonts()
+{
+    m_backend->loadFonts(*m_fontHolder);
 }
 
 void Application::processInput()
@@ -67,7 +76,7 @@ void Application::processInput()
                 m_isPaused = true;
                 break;
             case sf::Event::KeyPressed:
-                m_statisticsView->toggle();
+                if(event.key.code == sf::Keyboard::F5) m_statisticsView->toggle();
                 break;
         }
     }

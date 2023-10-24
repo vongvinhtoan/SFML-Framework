@@ -18,6 +18,7 @@ void Backend::save()
 {
 }
 
-void Backend::load()
+void Backend::loadFonts(FontHolder& fonts)
 {
+    fonts.load(FontID::Main, "res/fonts/Sansation.ttf");
 }
