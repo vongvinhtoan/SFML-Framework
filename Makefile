@@ -12,11 +12,21 @@ LIBS := -lsfml-graphics -lsfml-window -lsfml-system -lcomdlg32
 SRCS := $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard libs/jsoncpp/*.cpp)
 # Executable name
 MAIN := ./bin/RoadCrossing.exe
+# Object files directory
+OBJ_DIR := ./bin/obj
+# Object files
+OBJS := $(patsubst src/%.cpp, $(OBJ_DIR)/%.o, $(SRCS))
+# Clean command
+RM := del
 
-.PHONY: all clean
+# Build
+$(MAIN): $(OBJS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
 
-all: $(MAIN)
-	@echo Compilation successful!
+# Object files
+$(OBJ_DIR)/%.o: src/%.cpp
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
-$(MAIN): $(SRCS)
-	$(CC) $(CFLAGS) $(INCLUDES) $(LFLAGS) $^ -o $@ $(LIBS) 
+# Clean
+clean:
+	$(RM) $(OBJS) $(MAIN)

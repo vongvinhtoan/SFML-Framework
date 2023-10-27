@@ -24,6 +24,7 @@ public:
 private:
     void loadData();
     void loadFonts();
+    void loadConfig();
 
 private:
     void processInput();
@@ -40,5 +41,5 @@ private:
     bool                                m_isPaused = false;
 
 private:
-    const sf::Time TimePerFrame = sf::seconds(1.f / 60.f);
+    sf::Time TimePerFrame = sf::Time::Zero;
 };

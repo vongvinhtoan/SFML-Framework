@@ -23,5 +23,5 @@ private:
 #include <ResourceHolder.inl>
 #include <ResourceIdentifierList.hpp>
 
-using TextureHolder = ResourceHolder<sf::Texture, TextureID>;
-using FontHolder = ResourceHolder<sf::Font, FontID>;
+using TextureHolder = ResourceHolder<sf::Texture, TextureID::ID>;
+using FontHolder = ResourceHolder<sf::Font, FontID::ID>;

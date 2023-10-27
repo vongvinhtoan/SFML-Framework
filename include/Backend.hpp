@@ -1,12 +1,14 @@
 #pragma once
 
 #include <ResourceHolder.hpp>
+#include <json.h>
 
 class Backend
 {
 public:
     void save();
     void loadFonts(FontHolder& fonts);
+    void loadConfigs(Json::Value& configs);
 
 public:
     static Backend& getInstance();

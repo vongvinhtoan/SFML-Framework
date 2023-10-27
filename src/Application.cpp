@@ -1,5 +1,6 @@
 #include <Application.hpp>
 #include <iostream>
+#include <json.h>
 
 Application::Application()
 : m_backend(&Backend::getInstance())
@@ -12,7 +13,6 @@ Application::Application()
     m_statisticsView = dynamic_cast<StatisticsView*>(m_viewTree->getRoot());
     m_statisticsView->attachChild(std::make_unique<MovingSquare>(sf::FloatRect(0.f, 0.f, 640.f, 480.f)));
 
-    m_window->setFramerateLimit(60);
 }
 
 Application& Application::getInstance()
@@ -50,11 +50,20 @@ void Application::run()
 void Application::loadData()
 {
     loadFonts();
+    loadConfig();
 }
 
 void Application::loadFonts()
 {
     m_backend->loadFonts(*m_fontHolder);
+}
+
+void Application::loadConfig()
+{
+    Json::Value configs;
+    m_backend->loadConfigs(configs);
+
+    TimePerFrame = sf::seconds(1.f / configs["fps"].asFloat());
 }
 
 void Application::processInput()

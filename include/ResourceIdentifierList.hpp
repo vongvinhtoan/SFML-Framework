@@ -1,9 +1,15 @@
-enum TextureID
+namespace TextureID
 {
-    
-};
+    enum ID
+    {
 
-enum FontID
+    };
+}
+
+namespace FontID
 {
-    Main,
-};
+    enum ID
+    {
+        Main,
+    };
+}
