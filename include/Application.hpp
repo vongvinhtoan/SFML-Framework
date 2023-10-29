@@ -5,6 +5,7 @@
 #include <ViewList.hpp>
 #include <ViewTree.hpp>
 #include <ResourceHolder.hpp>
+#include <Context.hpp>
 #include <memory>
 
 class Application
@@ -37,6 +38,9 @@ private:
     std::unique_ptr<Backend>            m_backend;
     std::unique_ptr<ViewTree>           m_viewTree;
     std::unique_ptr<FontHolder>         m_fontHolder;
+    std::unique_ptr<TextureHolder>      m_textureHolder;
+    std::unique_ptr<Context>            m_context;
+    Json::Value                         m_configs;
     StatisticsView*                     m_statisticsView = nullptr;
     bool                                m_isPaused = false;
 

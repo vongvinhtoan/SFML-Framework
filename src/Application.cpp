@@ -4,15 +4,29 @@
 
 Application::Application()
 : m_backend(&Backend::getInstance())
+, m_context(&Context::getInstance())
 , m_fontHolder(std::make_unique<FontHolder>())
 {
     loadData();
-    m_window = std::make_unique<sf::RenderWindow>(sf::VideoMode(640, 480), "SFML Application");
+
+    TimePerFrame = sf::seconds(1.f / m_configs["fps"].asFloat());
+    m_window = std::make_unique<sf::RenderWindow>(
+        sf::VideoMode(
+            m_configs["window"]["width"].asInt(), 
+            m_configs["window"]["height"].asInt()
+        ), 
+        m_configs["window"]["title"].asString()
+    );
     m_activityStack = std::make_unique<ActivityStack>(); 
     m_viewTree = std::make_unique<ViewTree>(std::make_unique<StatisticsView>(m_fontHolder->get(FontID::Main)));
     m_statisticsView = dynamic_cast<StatisticsView*>(m_viewTree->getRoot());
-    m_statisticsView->attachChild(std::make_unique<MovingSquare>(sf::FloatRect(0.f, 0.f, 640.f, 480.f)));
+    m_statisticsView->attachChild(std::make_unique<MovingSquare>(sf::FloatRect(0.f, 0.f, m_window->getSize().x, m_window->getSize().y)));
 
+    m_context->setWindow(m_window.get());
+    m_context->setTextures(m_textureHolder.get());
+    m_context->setFonts(m_fontHolder.get());
+    m_context->setBackend(m_backend.get());
+    m_context->setConfigs(&m_configs);
 }
 
 Application& Application::getInstance()
@@ -60,10 +74,7 @@ void Application::loadFonts()
 
 void Application::loadConfig()
 {
-    Json::Value configs;
-    m_backend->loadConfigs(configs);
-
-    TimePerFrame = sf::seconds(1.f / configs["fps"].asFloat());
+    m_backend->loadConfigs(m_configs);
 }
 
 void Application::processInput()
