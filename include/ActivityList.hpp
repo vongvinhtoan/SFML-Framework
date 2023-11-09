@@ -1,6 +1,3 @@
 #pragma once
 
-enum class ActivityID
-{
-    Empty
-};
+#include <Activities/EmptyActivity.hpp>

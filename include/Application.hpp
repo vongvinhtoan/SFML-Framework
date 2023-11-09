@@ -3,6 +3,8 @@
 #include <ActivityStack.hpp>
 #include <Backend.hpp>
 #include <ViewList.hpp>
+#include <ActivityIdentifiers.hpp>
+#include <ActivityList.hpp>
 #include <ViewTree.hpp>
 #include <ResourceHolder.hpp>
 #include <Context.hpp>
@@ -23,6 +25,7 @@ public:
     void run();
 
 private:
+    void registerActivities();
     void loadData();
     void loadFonts();
     void loadConfig();

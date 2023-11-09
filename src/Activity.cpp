@@ -13,6 +13,22 @@ Activity::~Activity()
 {
 }
 
+bool Activity::handleEvent(sf::Event& event)
+{
+    return true;
+}
+
+bool Activity::handleRealtimeInput()
+{
+    return true;
+}
+
+bool Activity::update(sf::Time dt)
+{
+    m_viewTree->update(dt);
+    return true;
+}
+
 bool Activity::draw()
 {
     m_context->getWindow()->clear();
@@ -29,6 +45,11 @@ ViewNode* Activity::getLayer(int layer)
     }
     
     return m_layers[layer];
+}
+
+Context* Activity::getContext() const
+{
+    return m_context;
 }
 
 void Activity::requestActivity(ActivityID activityID)

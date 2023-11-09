@@ -32,7 +32,7 @@ public:
     std::unique_ptr<Object> create(Key key, Args&&... args);
 
 private:
-    std::unordered_map<Key, std::any> m_factory;
+    std::map<Key, std::any> m_factory;
 };
 
 #include <ActivityFactory.inl>

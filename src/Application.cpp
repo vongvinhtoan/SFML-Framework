@@ -27,6 +27,8 @@ Application::Application()
     m_context->setFonts(m_fontHolder.get());
     m_context->setBackend(m_backend.get());
     m_context->setConfigs(&m_configs);
+    
+    registerActivities();
 }
 
 Application& Application::getInstance()
@@ -59,6 +61,11 @@ void Application::run()
         }
         draw();
     }
+}
+
+void Application::registerActivities()
+{
+    m_activityStack->registerActivity<EmptyActivity, ActivityStack&, int, Extra&>(ActivityID::Empty);
 }
 
 void Application::loadData()

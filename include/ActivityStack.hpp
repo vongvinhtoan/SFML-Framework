@@ -1,9 +1,10 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include <Activity.hpp>
 #include <ActivityFactory.hpp> 
-#include <ActivityList.hpp>
+#include <ActivityIdentifiers.hpp>
 #include <Extra.hpp>
 #include <memory>
 #include <vector>
@@ -51,7 +52,7 @@ private:
 private:
     std::vector<std::unique_ptr<Activity>>  m_stack;
     std::vector<PendingChange>              m_pendingList;
-    ActivityFactory<ActivityID, Activity>   m_factory;
+    ActivityFactory<int, Activity>          m_factory;
 };
 
 enum class ActivityStack::Action

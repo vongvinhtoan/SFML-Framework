@@ -16,7 +16,7 @@ template <class Key, class Object>
 template <typename Function>
 void ActivityFactory<Key, Object>::add(Key key, Function createFunction)
 {
-    m_factory[key] = createFunction;
+    m_factory[key] = std::any(createFunction);
 }
 
 template <class Key, class Object>
