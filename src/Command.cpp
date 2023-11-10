@@ -25,11 +25,6 @@ bool Command::isOnHovered() const
     return m_command & OnHover;
 }
 
-bool Command::isOnReleased() const
-{
-    return m_command & OnRelease;
-}
-
 bool Command::isOnHold() const
 {
     return m_command & OnHold;
