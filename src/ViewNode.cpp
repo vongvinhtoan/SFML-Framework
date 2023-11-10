@@ -1,5 +1,6 @@
 #include <ViewNode.hpp>
 #include <cassert>
+#include <iostream>
 
 ViewNode::ViewNode()
 {

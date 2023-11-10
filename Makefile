@@ -9,7 +9,9 @@ LFLAGS := -L"./libs/SFML-2.5.1/lib"
 # Libraries
 LIBS := -lsfml-graphics -lsfml-window -lsfml-system -lcomdlg32
 # Source files
-SRCS := $(wildcard src/*.cpp) $(wildcard src/*/*.cpp) $(wildcard libs/jsoncpp/*.cpp)
+SRCS := $(wildcard src/*.cpp) $(wildcard src/*/*.cpp)
+# Library cpp files
+LIB_SRCS := $(wildcard libs/jsoncpp/*.cpp)
 # Executable name
 MAIN := .\bin\RoadCrossing.exe
 # Object files directory
@@ -21,12 +23,17 @@ RM := del
 
 # Build
 $(MAIN): $(OBJS)
-	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LFLAGS) $(LIBS)
+	$(CC) $(CFLAGS) $(INCLUDES) -o $(MAIN) $(OBJS) $(LIB_SRCS) $(LFLAGS) $(LIBS)
 
 # Object files
 $(OBJ_DIR)\\%.o: src/%.cpp
+	if not exist $(@D) mkdir $(@D)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Run
 run:
 	$(MAIN)
+
+# Clean
+clean:
+	$(foreach file,$(subst /,\,$(OBJS)) $(MAIN),$(RM) $(file);)

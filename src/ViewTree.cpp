@@ -1,6 +1,7 @@
 #include <ViewTree.hpp>
 
 ViewTree::ViewTree()
+: m_root(std::make_unique<EmptyView>())
 {
 }
 

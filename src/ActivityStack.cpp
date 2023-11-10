@@ -56,43 +56,45 @@ void ActivityStack::draw()
 
 void ActivityStack::pushActivity(ActivityID activityID)
 {
-    PendingChangeBuilder builder;
-    builder.setAction(Action::Push);
-    builder.setActivityID(activityID);
-    m_pendingList.push_back(builder.build());
+    PendingChange change;
+    change.setAction(Action::Push)
+            .setActivityID(activityID)
+            .setRequestCode(0)
+            .setExtra(new Extra());
+    m_pendingList.push_back(change);
 }
 
-void ActivityStack::pushActivity(ActivityID activityID, int requestCode, std::unique_ptr<Extra> extra)
+void ActivityStack::pushActivity(ActivityID activityID, int requestCode, Extra* extra)
 {
-    PendingChangeBuilder builder;
-    builder.setAction(Action::Push);
-    builder.setActivityID(activityID);
-    builder.setRequestCode(requestCode);
-    builder.setExtra(std::move(extra));
-    m_pendingList.push_back(builder.build());
+    PendingChange change;
+    change.setAction(Action::Push)
+            .setActivityID(activityID)
+            .setRequestCode(requestCode)
+            .setExtra(extra);
+    m_pendingList.push_back(change);
 }
 
 void ActivityStack::backActivity()
 {
-    PendingChangeBuilder builder;
-    builder.setAction(Action::Pop);
-    m_pendingList.push_back(builder.build());
+    PendingChange change;
+    change.setAction(Action::Back);
+    m_pendingList.push_back(change);
 }
 
-void ActivityStack::backActivity(int resultCode, std::unique_ptr<Extra> extra)
+void ActivityStack::backActivity(int resultCode, Extra* extra)
 {
-    PendingChangeBuilder builder;
-    builder.setAction(Action::Pop);
-    builder.setResultCode(resultCode);
-    builder.setExtra(std::move(extra));
-    m_pendingList.push_back(builder.build());
+    PendingChange change;
+    change.setAction(Action::Back)
+            .setResultCode(resultCode)
+            .setExtra(extra);
+    m_pendingList.push_back(change);
 }
 
 void ActivityStack::clearActivities()
 {
-    PendingChangeBuilder builder;
-    builder.setAction(Action::Clear);
-    m_pendingList.push_back(builder.build());
+    PendingChange change;
+    change.setAction(Action::Clear);
+    m_pendingList.push_back(change);
 }
 
 void ActivityStack::applyPendingChanges()
@@ -104,8 +106,16 @@ void ActivityStack::applyPendingChanges()
             case Action::Push:
             {
                 ActivityID activityID = change.getActivityID();
-                std::unique_ptr<Activity> activity = m_factory.create(activityID, *this, change.getRequestCode(), *change.getExtra());
+                int requestCode = change.getRequestCode();
+                Extra* extra = change.getExtra();
+
+                if (m_factory.find(activityID) == m_factory.end())
+                    throw std::runtime_error("ActivityStack::applyPendingChanges() : activity not registered");
+
+                std::unique_ptr<Activity> activity = m_factory[activityID](*this, requestCode, *extra);
+
                 m_stack.push_back(std::move(activity));
+
                 break;
             }
             case Action::Pop:
@@ -128,7 +138,7 @@ void ActivityStack::applyPendingChanges()
 
                 if(m_stack.empty())
                     throw std::runtime_error("ActivityStack::applyPendingChanges() : stack is empty, cannot back");
-                m_stack.back()->onActivityResult(change.getResultCode(), std::move(change.getExtra()));
+                m_stack.back()->onActivityResult(change.getResultCode(), change.getExtra());
                 break;
             }
         }

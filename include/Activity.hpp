@@ -7,6 +7,7 @@
 #include <Context.hpp>
 #include <Extra.hpp>
 #include <ActivityIdentifiers.hpp>
+#include <iostream>
 
 class ActivityStack;
 
@@ -26,10 +27,10 @@ protected:
 
 protected:
     void requestActivity(ActivityID activityID);
-    void requestActivity(ActivityID activityID, int requestCode, std::unique_ptr<Extra> extra);
+    void requestActivity(ActivityID activityID, int requestCode, Extra* extra);
     void finishActivity();
-    void finishActivity(int resultCode, std::unique_ptr<Extra> extra);
-    virtual void onActivityResult(int resultCode, std::unique_ptr<Extra> extra);
+    void finishActivity(int resultCode, Extra* extra);
+    virtual void onActivityResult(int resultCode, Extra* extra);
 
 protected:
     ViewNode* getLayer(int layer);

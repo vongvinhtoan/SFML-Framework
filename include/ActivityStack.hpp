@@ -3,14 +3,14 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <Activity.hpp>
-#include <ActivityFactory.hpp> 
 #include <ActivityIdentifiers.hpp>
 #include <Extra.hpp>
 #include <memory>
 #include <vector>
+#include <map>
+#include <functional>
 
 class PendingChange;
-class PendingChangeBuilder;
 
 class ActivityStack
 {
@@ -25,7 +25,7 @@ public:
     ~ActivityStack();
 
 public:
-    template <typename ActivityChild, typename... Args>
+    template <typename ActivityChild>
     void registerActivity(ActivityID activityID);
 
 public:
@@ -37,14 +37,10 @@ public:
 
 public:
     void pushActivity(ActivityID activityID);
-    void pushActivity(ActivityID activityID, int requestCode, std::unique_ptr<Extra> extra);
+    void pushActivity(ActivityID activityID, int requestCode,  Extra* extra);
     void backActivity();
-    void backActivity(int resultCode, std::unique_ptr<Extra> extra);
+    void backActivity(int resultCode, Extra* extra);
     void clearActivities();
-
-private:
-    template <class Child, typename... Args>
-    std::unique_ptr<Activity> createClass(Args... args);
 
 private:
     void applyPendingChanges();
@@ -52,15 +48,28 @@ private:
 private:
     std::vector<std::unique_ptr<Activity>>  m_stack;
     std::vector<PendingChange>              m_pendingList;
-    ActivityFactory<int, Activity>          m_factory;
+    
+    using GenFunction = std::function<std::unique_ptr<Activity>(ActivityStack&, int, Extra&)>;
+    std::map<ActivityID, GenFunction>       m_factory;
 };
 
 enum class ActivityStack::Action
 {
+    Null,
     Push,
     Pop,
     Clear,
     Back
 };
 
-#include <ActivityStack.inl>
+template <typename ActivityChild>
+void ActivityStack::registerActivity(ActivityID activityID) 
+{
+    auto function = std::function<std::unique_ptr<Activity>(ActivityStack&, int, Extra&)> (
+        [&] (ActivityStack& stack, int requestCode, Extra& extra) -> std::unique_ptr<Activity> {
+            return std::make_unique<ActivityChild>(stack, requestCode, extra);
+        }
+    );
+
+    m_factory[activityID] = function;
+}

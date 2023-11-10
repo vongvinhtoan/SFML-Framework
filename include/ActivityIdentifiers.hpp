@@ -2,5 +2,6 @@
 
 enum ActivityID
 {
+    Null,
     Empty
 };

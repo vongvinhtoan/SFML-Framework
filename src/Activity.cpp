@@ -57,9 +57,9 @@ void Activity::requestActivity(ActivityID activityID)
     m_stack->pushActivity(activityID);
 }
 
-void Activity::requestActivity(ActivityID activityID, int requestCode, std::unique_ptr<Extra> extra)
+void Activity::requestActivity(ActivityID activityID, int requestCode, Extra* extra)
 {
-    m_stack->pushActivity(activityID, requestCode, std::move(extra));
+    m_stack->pushActivity(activityID, requestCode, extra);
 }
 
 void Activity::finishActivity()
@@ -67,12 +67,12 @@ void Activity::finishActivity()
     m_stack->backActivity();
 }
 
-void Activity::finishActivity(int resultCode, std::unique_ptr<Extra> extra)
+void Activity::finishActivity(int resultCode, Extra* extra)
 {
-    m_stack->backActivity(resultCode, std::move(extra));
+    m_stack->backActivity(resultCode, extra);
 }
 
 
-void Activity::onActivityResult(int resultCode, std::unique_ptr<Extra> extra)
+void Activity::onActivityResult(int resultCode, Extra* extra)
 {
 }

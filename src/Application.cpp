@@ -20,7 +20,6 @@ Application::Application()
     m_activityStack = std::make_unique<ActivityStack>(); 
     m_viewTree = std::make_unique<ViewTree>(std::make_unique<StatisticsView>(m_fontHolder->get(FontID::Main)));
     m_statisticsView = dynamic_cast<StatisticsView*>(m_viewTree->getRoot());
-    m_statisticsView->attachChild(std::make_unique<MovingSquare>(sf::FloatRect(0.f, 0.f, m_window->getSize().x, m_window->getSize().y)));
 
     m_context->setWindow(m_window.get());
     m_context->setTextures(m_textureHolder.get());
@@ -29,6 +28,7 @@ Application::Application()
     m_context->setConfigs(&m_configs);
     
     registerActivities();
+    m_activityStack->pushActivity(ActivityID::Empty);
 }
 
 Application& Application::getInstance()
@@ -65,7 +65,7 @@ void Application::run()
 
 void Application::registerActivities()
 {
-    m_activityStack->registerActivity<EmptyActivity, ActivityStack&, int, Extra&>(ActivityID::Empty);
+    m_activityStack->registerActivity<EmptyActivity>(ActivityID::Empty);
 }
 
 void Application::loadData()
