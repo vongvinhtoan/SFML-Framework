@@ -57,7 +57,9 @@ public:
 private:
     ViewNode*                               m_parent = nullptr;
     bool                                    m_enabled = true;
-    bool                                    m_isPressed = false;
+    bool                                    m_isHolding = false;
+    sf::Clock                               m_holdClock;
+    sf::Time                                m_holdRequiredTime = sf::seconds(0.15f);
     std::function<void(ViewNode&)>          m_onClick;
     std::function<void(ViewNode&)>          m_onClickAway;
     std::function<void(ViewNode&)>          m_onHover;

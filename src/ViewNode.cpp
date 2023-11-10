@@ -75,30 +75,23 @@ void ViewNode::handleEventWithCommand(sf::Event& event, Command& command)
     {
         if(contains(localMousePosition))
         {
-            if(command.isOnHold())
-            {
-                m_isPressed = true;
-                command.remove(Command::OnHold);
-            }
+            m_isHolding = true;
+            m_holdClock.restart();
+
+            if(m_onClick)
+                m_onClick(*this);
+        }
+        else
+        {
+            m_isHolding = false;
+
+            if(m_onClickAway)
+                m_onClickAway(*this);
         }
     }
     else if(event.type == sf::Event::MouseButtonReleased)
     {
-        if(contains(localMousePosition))
-        {
-            if(m_isPressed)
-            {
-                m_isPressed = false;
-                if(m_onClick && command.isOnClicked())
-                    m_onClick(*this), command.remove(Command::OnClick);
-            }
-        }
-        else 
-        {
-            if(m_onClickAway)
-                m_onClickAway(*this);
-        }
-        m_isPressed = false;
+        m_isHolding = false;
     }
 }
 
@@ -113,21 +106,21 @@ void ViewNode::handleRealtimeInputWithCommand(Command& command)
     {
         if(m_onLostHover)
             m_onLostHover(*this);
-        m_isPressed = false;
+
+        m_isHolding = false;
     }
     if(contains(localMousePosition))
     {
-        if(m_isPressed)
+        if(m_isHolding && m_holdClock.getElapsedTime() >= m_holdRequiredTime)
         {
-            if(m_onHold && command.isOnHold())
+            if(m_onHold)
                 m_onHold(*this), command.remove(Command::OnHold);
         }
-        else
+        else if(!m_isHolding)
         {
-            if(m_onHover && command.isOnHovered())
+            if(m_onHover)
                 m_onHover(*this), command.remove(Command::OnHover);
         }
-        command.remove(Command::OnHover);
     }
 }
 

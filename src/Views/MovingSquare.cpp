@@ -6,31 +6,6 @@ MovingSquare::MovingSquare(sf::FloatRect bounds)
 {
     m_square = std::make_unique<sf::RectangleShape>(sf::Vector2f(200.f, 150.f));
     m_square->setFillColor(sf::Color::Red);
-
-    setOnClick([&](ViewNode& node) {
-        std::cout << "Clicked on square" << std::endl;
-        m_square->setFillColor(sf::Color::Green);
-    });
-
-    setOnClickAway([&](ViewNode& node) {
-        std::cout << "Clicked away from square" << std::endl;
-        m_square->setFillColor(sf::Color::Red);
-    });
-
-    setOnHover([&](ViewNode& node) {
-        std::cout << "Hovering over square" << std::endl;
-        // m_square->setFillColor(sf::Color::Blue);
-    });
-
-    setOnLostHover([&](ViewNode& node) {
-        std::cout << "Lost hover over square" << std::endl;
-        // m_square->setFillColor(sf::Color::Red);
-    });
-
-    setOnHold([&](ViewNode& node) {
-        std::cout << "Holding square" << std::endl;
-        m_square->setFillColor(sf::Color::Blue);
-    });
 }
 
 MovingSquare::~MovingSquare()
