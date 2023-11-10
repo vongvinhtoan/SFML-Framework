@@ -41,8 +41,6 @@ public:
     void backActivity();
     void backActivity(int resultCode, Extra* extra);
     void clearActivities();
-
-private:
     void applyPendingChanges();
 
 private:

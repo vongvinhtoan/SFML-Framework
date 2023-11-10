@@ -14,6 +14,9 @@ private:
     virtual void handleRealtimeInput() final;
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const final;
 
+public:
+    virtual bool contains(sf::Vector2f point) const final;
+
 private:
     std::unique_ptr<sf::RectangleShape> m_square;
     sf::Vector2f m_velocity = { 100.f, 100.f };

@@ -29,6 +29,7 @@ Application::Application()
     
     registerActivities();
     m_activityStack->pushActivity(ActivityID::Empty);
+    m_activityStack->applyPendingChanges();
 }
 
 Application& Application::getInstance()
@@ -48,7 +49,7 @@ void Application::run()
 
     while (m_window->isOpen())
     {
-        // if(m_activityStack->isEmpty()) m_window->close();
+        if(m_activityStack->isEmpty()) m_window->close();
 
         processInput();
         timeSinceLastUpdate += clock.restart();

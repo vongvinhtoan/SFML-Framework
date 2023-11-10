@@ -2,6 +2,7 @@
 
 #include <ViewNode.hpp>
 #include <ViewList.hpp>
+#include <Command.hpp>
 
 class ViewTree : public sf::Drawable, public sf::Transformable
 {
@@ -23,8 +24,8 @@ private:
 
 private:
     void update(sf::Time dt, ViewNode& node);
-    void handleEvent(sf::Event& event, ViewNode& node);
-    void handleRealtimeInput(ViewNode& node);
+    void handleEvent(sf::Event& event, ViewNode& node, Command& command);
+    void handleRealtimeInput(ViewNode& node, Command& command);
     void draw(sf::RenderTarget& target, sf::RenderStates states, const ViewNode& node) const;
 
 private:

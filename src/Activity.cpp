@@ -15,11 +15,13 @@ Activity::~Activity()
 
 bool Activity::handleEvent(sf::Event& event)
 {
+    m_viewTree->handleEvent(event);
     return true;
 }
 
 bool Activity::handleRealtimeInput()
 {
+    m_viewTree->handleRealtimeInput();
     return true;
 }
 

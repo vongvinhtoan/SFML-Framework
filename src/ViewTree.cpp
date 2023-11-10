@@ -26,50 +26,58 @@ ViewNode* ViewTree::getRoot() const
 
 void ViewTree::update(sf::Time dt)
 {
-    if (m_root)
-        update(dt, *m_root);
+    if (!m_root) return;
+
+    update(dt, *m_root);
 }
 
 void ViewTree::handleEvent(sf::Event& event)
 {
-    if (m_root)
-        handleEvent(event, *m_root);
+    if (!m_root) return;
+
+    Command command;
+    handleEvent(event, *m_root, command);
 }
 
 void ViewTree::handleRealtimeInput()
 {
-    if (m_root)
-        handleRealtimeInput(*m_root);
+    if (!m_root) return;
+
+    Command command;
+    handleRealtimeInput(*m_root, command);
 }
 
 void ViewTree::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    if (m_root)
-        draw(target, states, *m_root);
+    if (!m_root) return;
+
+    draw(target, states, *m_root);
 }
 
 void ViewTree::update(sf::Time dt, ViewNode& node)
 {
-    for (auto& child : node.m_children)
+    for (auto &child: node.m_children)
         update(dt, *child);
     
     node.update(dt);
 }
 
-void ViewTree::handleEvent(sf::Event& event, ViewNode& node)
+void ViewTree::handleEvent(sf::Event& event, ViewNode& node, Command& command)
 {
-    for (auto& child : node.m_children)
-        handleEvent(event, *child);
+    for (auto it = node.m_children.rbegin(); it != node.m_children.rend(); ++it)
+        handleEvent(event, **it, command);
     
     node.handleEvent(event);
+    node.handleEventWithCommand(event, command);
 }
 
-void ViewTree::handleRealtimeInput(ViewNode& node)
+void ViewTree::handleRealtimeInput(ViewNode& node, Command& command)
 {
-    for (auto& child : node.m_children)
-        handleRealtimeInput(*child);
+    for (auto it = node.m_children.rbegin(); it != node.m_children.rend(); ++it)
+        handleRealtimeInput(**it, command);
     
     node.handleRealtimeInput();
+    node.handleRealtimeInputWithCommand(command);
 }
 
 void ViewTree::draw(sf::RenderTarget& target, sf::RenderStates states, const ViewNode& node) const

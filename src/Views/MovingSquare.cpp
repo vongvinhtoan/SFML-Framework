@@ -1,10 +1,36 @@
 #include <Views/MovingSquare.hpp>
+#include <iostream>
 
 MovingSquare::MovingSquare(sf::FloatRect bounds)
     : m_bounds(bounds)
 {
     m_square = std::make_unique<sf::RectangleShape>(sf::Vector2f(200.f, 150.f));
     m_square->setFillColor(sf::Color::Red);
+
+    setOnClick([&](ViewNode& node) {
+        std::cout << "Clicked on square" << std::endl;
+        m_square->setFillColor(sf::Color::Green);
+    });
+
+    setOnClickAway([&](ViewNode& node) {
+        std::cout << "Clicked away from square" << std::endl;
+        m_square->setFillColor(sf::Color::Red);
+    });
+
+    setOnHover([&](ViewNode& node) {
+        std::cout << "Hovering over square" << std::endl;
+        // m_square->setFillColor(sf::Color::Blue);
+    });
+
+    setOnLostHover([&](ViewNode& node) {
+        std::cout << "Lost hover over square" << std::endl;
+        // m_square->setFillColor(sf::Color::Red);
+    });
+
+    setOnHold([&](ViewNode& node) {
+        std::cout << "Holding square" << std::endl;
+        m_square->setFillColor(sf::Color::Blue);
+    });
 }
 
 MovingSquare::~MovingSquare()
@@ -52,4 +78,10 @@ void MovingSquare::handleRealtimeInput()
 void MovingSquare::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     target.draw(*m_square, states);
+}
+
+bool MovingSquare::contains(sf::Vector2f point) const
+{
+    // std::cout << "Checking if square contains point" << std::endl;
+    return m_square->getGlobalBounds().contains(point);
 }
