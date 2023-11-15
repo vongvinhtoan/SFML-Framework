@@ -64,11 +64,6 @@ void Application::run()
     }
 }
 
-void Application::registerActivities()
-{
-    m_activityStack->registerActivity<EmptyActivity>(ActivityID::Empty);
-}
-
 void Application::loadData()
 {
     loadFonts();

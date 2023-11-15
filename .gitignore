@@ -1,1 +1,3 @@
-bin/
+bin/obj
+bin/*.exe
+ActivityMake.cpp
