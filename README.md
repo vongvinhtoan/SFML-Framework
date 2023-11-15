@@ -1,4 +1,4 @@
-# SFML Framework for C++
+# SFML Framework for C++ on Windows
 
 ## Description
 This is a simple framework for SFML. It tries to imitate the structure of Android Studio projects.
