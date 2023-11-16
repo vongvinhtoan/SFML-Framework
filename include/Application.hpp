@@ -1,10 +1,10 @@
 #pragma once
+
 #include <SFML/Graphics.hpp>
 #include <ActivityStack.hpp>
 #include <Backend.hpp>
 #include <ViewList.hpp>
 #include <ActivityIdentifiers.hpp>
-#include <ActivityList.hpp>
 #include <ViewTree.hpp>
 #include <ResourceHolder.hpp>
 #include <Context.hpp>

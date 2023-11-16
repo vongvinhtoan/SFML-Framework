@@ -1,7 +1,6 @@
 #pragma once
 
 #include <ViewNode.hpp>
-#include <ViewList.hpp>
 #include <Command.hpp>
 
 class ViewTree : public sf::Drawable, public sf::Transformable

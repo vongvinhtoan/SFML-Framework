@@ -1,4 +1,5 @@
 #include <Application.hpp>
+#include <ActivityList.hpp>
 
 void Application::registerActivities()
 {

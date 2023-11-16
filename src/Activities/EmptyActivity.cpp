@@ -1,5 +1,4 @@
 #include <Activities/EmptyActivity.hpp>
-#include <Views/MovingSquare.hpp>
 
 EmptyActivity::EmptyActivity(ActivityStack& stack, int requestCode, Extra& intent)
 : Activity(stack, requestCode, intent)

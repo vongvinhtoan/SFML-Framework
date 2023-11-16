@@ -8,6 +8,7 @@
 #include <Extra.hpp>
 #include <ActivityIdentifiers.hpp>
 #include <iostream>
+#include <ViewList.hpp>
 
 class ActivityStack;
 
