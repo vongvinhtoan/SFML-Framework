@@ -1,3 +1,3 @@
 #pragma once
 
-#include <Activities/EmptyActivity.hpp>
+#include <Activities/MainActivity.hpp>

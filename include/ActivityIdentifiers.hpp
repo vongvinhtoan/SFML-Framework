@@ -3,5 +3,5 @@
 enum ActivityID
 {
     Null
-    , Empty
+	, Main
 };

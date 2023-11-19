@@ -14,12 +14,14 @@ Application::Application()
         sf::VideoMode(
             m_configs["window"]["width"].asInt(), 
             m_configs["window"]["height"].asInt()
-        ), 
-        m_configs["window"]["title"].asString()
+        )
+        , m_configs["window"]["title"].asString()
+        , sf::Style::Close
     );
     m_activityStack = std::make_unique<ActivityStack>(); 
     m_viewTree = std::make_unique<ViewTree>(std::make_unique<StatisticsView>(m_fontHolder->get(FontID::Main)));
     m_statisticsView = dynamic_cast<StatisticsView*>(m_viewTree->getRoot());
+    if(m_configs["hide_statistic"].asBool()) m_statisticsView->toggle();
 
     m_context->setWindow(m_window.get());
     m_context->setTextures(m_textureHolder.get());
@@ -28,7 +30,7 @@ Application::Application()
     m_context->setConfigs(&m_configs);
     
     registerActivities();
-    m_activityStack->pushActivity(ActivityID::Empty);
+    m_activityStack->pushActivity(ActivityID::Main);
     m_activityStack->applyPendingChanges();
 }
 
@@ -47,17 +49,19 @@ void Application::run()
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-    while (m_window->isOpen())
-    {
-        if(m_activityStack->isEmpty()) m_window->close();
+    while (m_window->isOpen()) {
+        if(m_activityStack->isEmpty()) {
+            m_window->close();
+            return;
+        }
 
-        processInput();
+        if(!processInput()) return;
         timeSinceLastUpdate += clock.restart();
         while (timeSinceLastUpdate > TimePerFrame)
         {
             timeSinceLastUpdate -= TimePerFrame;
 
-            processInput();
+            if(!processInput()) return;
             if(!m_isPaused) update(TimePerFrame);
         }
         draw();
@@ -80,7 +84,7 @@ void Application::loadConfig()
     m_backend->loadConfigs(m_configs);
 }
 
-void Application::processInput()
+bool Application::processInput()
 {
     sf::Event event;
     while(m_window->pollEvent(event))
@@ -91,6 +95,7 @@ void Application::processInput()
             case sf::Event::Closed:
                 m_backend->save();
                 m_window->close();
+                return false;
                 break;
             case sf::Event::GainedFocus:
                 m_isPaused = false;
@@ -104,6 +109,7 @@ void Application::processInput()
         }
     }
     if(!m_isPaused) m_activityStack->handleRealtimeInput();
+    return true;
 }
 
 void Application::update(sf::Time dt)

@@ -33,7 +33,6 @@ bool Activity::update(sf::Time dt)
 
 bool Activity::draw()
 {
-    m_context->getWindow()->clear();
     m_context->getWindow()->draw(*m_viewTree);
     return true;
 }
@@ -47,6 +46,11 @@ ViewNode* Activity::getLayer(int layer)
     }
     
     return m_layers[layer];
+}
+
+ViewNode* Activity::getViewRoot()
+{
+    return m_viewTree->getRoot();
 }
 
 Context* Activity::getContext() const
