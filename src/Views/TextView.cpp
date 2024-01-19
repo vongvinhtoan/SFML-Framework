@@ -6,6 +6,7 @@ TextView::TextView()
 
 TextView::~TextView()
 {
+    
 }
 
 sf::Text &TextView::get()

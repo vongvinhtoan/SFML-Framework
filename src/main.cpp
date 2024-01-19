@@ -1,5 +1,6 @@
 #include <iostream>
 #include <Application.hpp>
+#include <Randomizer.hpp>
 
 int main() 
 {

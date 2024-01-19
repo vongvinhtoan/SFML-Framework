@@ -51,6 +51,7 @@ Application::~Application()
 void Application::saveData()
 {
     m_backend->saveConfig(m_configs);
+    m_backend->saveWonList(*m_context->getWonList());
 }
 
 void Application::run()
@@ -82,6 +83,7 @@ void Application::loadData()
     loadTextures();
     loadFonts();
     loadConfig();
+    m_backend->loadWonList(*m_context->getWonList());
 }
 
 void Application::loadTextures()

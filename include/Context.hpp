@@ -16,11 +16,12 @@ private:
     Context& operator=(const Context&) = delete;
 
 public:
-    sf::RenderWindow*  getWindow();
-    TextureHolder*     getTextures();
-    FontHolder*        getFonts();
-    Backend*           getBackend();
-    Json::Value*       getConfigs();
+    sf::RenderWindow*   getWindow();
+    TextureHolder*      getTextures();
+    FontHolder*         getFonts();
+    Backend*            getBackend();
+    Json::Value*        getConfigs();
+    std::map<int, int>* getWonList();
 
     void setWindow(sf::RenderWindow* window);
     void setTextures(TextureHolder* textures);
@@ -34,4 +35,5 @@ private:
     FontHolder*        fonts;
     Backend*           backend;
     Json::Value*       configs;
+    std::map<int, int> wonList;
 };

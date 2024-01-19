@@ -67,3 +67,8 @@ void Context::setConfigs(Json::Value* configs)
 {
     this->configs = configs;
 }
+
+std::map<int, int>* Context::getWonList()
+{
+    return &wonList;
+}

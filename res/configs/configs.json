@@ -1,10 +1,23 @@
 {
 	"fps" : 60,
-	"hide_statistic" : null,
+	"hide_statistic" : true,
+	"random_range" : 
+	{
+		"max" : 500,
+		"min" : 1
+	},
+	"random_seed" : 728327176,
+	"text_preview" : 
+	{
+		"character_size" : 230,
+		"offset_x" : 942,
+		"offset_y" : 377.27999999999997,
+		"spacing_x" : 149.03999999999999
+	},
 	"window" : 
 	{
-		"height" : 600,
+		"height" : 750,
 		"title" : "Game",
-		"width" : 800
+		"width" : 1500
 	}
 }

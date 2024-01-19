@@ -1,6 +1,7 @@
 #pragma once
 
 #include <Activity.hpp>
+#include <ResultTextProcessor.hpp>
 
 class RectangleView;
 class ArrowView;
@@ -18,4 +19,6 @@ public:
 
 private:
 	sf::Time m_time = sf::Time::Zero;
+	PreviewTextView* m_previewText;
+	ResultTextProcessor m_resultTextProcessor;
 };
