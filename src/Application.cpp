@@ -6,6 +6,7 @@ Application::Application()
 : m_backend(&Backend::getInstance())
 , m_context(&Context::getInstance())
 , m_fontHolder(std::make_unique<FontHolder>())
+, m_textureHolder(std::make_unique<TextureHolder>())
 {
     loadData();
 
@@ -18,6 +19,8 @@ Application::Application()
         , m_configs["window"]["title"].asString()
         , sf::Style::Close
     );
+    m_window->setFramerateLimit(m_configs["fps"].asFloat());
+    m_window->setKeyRepeatEnabled(false);
     m_activityStack = std::make_unique<ActivityStack>(); 
     m_viewTree = std::make_unique<ViewTree>(std::make_unique<StatisticsView>(m_fontHolder->get(FontID::Main)));
     m_statisticsView = dynamic_cast<StatisticsView*>(m_viewTree->getRoot());
@@ -26,7 +29,7 @@ Application::Application()
     m_context->setWindow(m_window.get());
     m_context->setTextures(m_textureHolder.get());
     m_context->setFonts(m_fontHolder.get());
-    m_context->setBackend(m_backend.get());
+    m_context->setBackend(m_backend);
     m_context->setConfigs(&m_configs);
     
     registerActivities();
@@ -42,6 +45,12 @@ Application& Application::getInstance()
 
 Application::~Application()
 {
+    saveData();
+}
+
+void Application::saveData()
+{
+    m_backend->saveConfig(m_configs);
 }
 
 void Application::run()
@@ -70,8 +79,14 @@ void Application::run()
 
 void Application::loadData()
 {
+    loadTextures();
     loadFonts();
     loadConfig();
+}
+
+void Application::loadTextures()
+{
+    m_backend->loadTextures(*m_textureHolder);
 }
 
 void Application::loadFonts()
@@ -93,7 +108,6 @@ bool Application::processInput()
         switch (event.type)
         {
             case sf::Event::Closed:
-                m_backend->save();
                 m_window->close();
                 return false;
                 break;

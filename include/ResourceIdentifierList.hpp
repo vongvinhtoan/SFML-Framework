@@ -1,10 +1,10 @@
-namespace TextureID
+namespace TextureID 
 {
-    enum ID
+    enum ID 
     {
-
+        
     };
-}
+}  // namespace TextureID
 
 namespace FontID
 {

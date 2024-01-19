@@ -4,11 +4,6 @@ RectangleView::RectangleView()
 {
 }
 
-RectangleView::RectangleView(const sf::RectangleShape& rectangle)
-    : m_rectangle(rectangle)
-{
-}
-
 RectangleView::~RectangleView()
 {
 }
@@ -27,15 +22,22 @@ void RectangleView::handleRealtimeInput()
 
 void RectangleView::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(m_rectangle, states);
+	if(!this->m_hidden) {
+		target.draw(m_rectangle, states);
+	}
 }
 
 bool RectangleView::contains(sf::Vector2f point) const
 {
-    return m_rectangle.getGlobalBounds().contains(point);
+	return m_rectangle.getGlobalBounds().contains(point);
 }
 
 sf::RectangleShape& RectangleView::get()
 {
-    return m_rectangle;
+	return m_rectangle;
+}
+
+sf::RectangleShape RectangleView::getRectangle() const
+{
+	return m_rectangle;
 }

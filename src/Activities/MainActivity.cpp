@@ -1,11 +1,9 @@
 #include <Activities/MainActivity.hpp>
+#include <Utils.hpp>
 
 MainActivity::MainActivity(ActivityStack& stack, int requestCode, Extra& intent)
 	: Activity(stack, requestCode, intent)
 {
-	ViewNode* layer = getLayer(0);
-	auto window_size = getContext()->getWindow()->getSize();
-	layer->attachChild(std::make_unique<MovingSquare>(sf::FloatRect(0, 0, window_size.x, window_size.y)));
 }
 
 MainActivity::~MainActivity()
@@ -24,10 +22,15 @@ bool MainActivity::handleRealtimeInput()
 
 bool MainActivity::update(sf::Time dt)
 {
-	return Activity::update(dt);
+	Activity::update(dt);
+	return 0;
 }
 
 bool MainActivity::draw()
 {
 	return Activity::draw();
+}
+
+void MainActivity::onActivityResult(int resultCode, Extra* extra)
+{
 }
